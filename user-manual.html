@@ -1,0 +1,2000 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>wewatch 사용자 매뉴얼</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&display=swap"
+    />
+    <style>
+      /* wewatch 웹 배포판 매뉴얼(wewatch_web/public/manual)과 같은 다크 팔레트/타이포그래피. */
+      :root {
+        --bg: #070a12;
+        --panel: #0b0e16;
+        --panel-2: #0e1220;
+        --border: rgba(255, 255, 255, 0.1);
+        --border-strong: rgba(255, 255, 255, 0.18);
+        --text: #e8ebf2;
+        --text-secondary: #9ba3b8;
+        --text-dim: #6f778d;
+        --brand: #f4ce3c;
+        --brand-dark: #f4ce3c;
+        --brand-ink: #070a12;
+        --brand-soft: rgba(244, 206, 60, 0.09);
+        --brand-border: rgba(244, 206, 60, 0.3);
+        --danger: #e2574c;
+        --danger-soft: rgba(226, 87, 76, 0.1);
+        --danger-border: rgba(226, 87, 76, 0.32);
+        --code-bg: #0b0e16;
+        --code-text: #e8ebf2;
+        /* .screen(스크린샷 카드) 전용 톤 — 배경보다 눈에 띄게 밝혀서 화면 사이 경계가 또렷하게 보이도록 함 */
+        --screen-bg: #151c30;
+        --screen-bg-top: #1b2440;
+        --screen-border: rgba(255, 255, 255, 0.2);
+        --screen-border-top: rgba(255, 255, 255, 0.32);
+        --mono:
+          "IBM Plex Mono", ui-monospace, "Cascadia Code", Consolas, monospace;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      ::selection {
+        background: var(--brand);
+        color: var(--brand-ink);
+      }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+        font-family:
+          "Pretendard Variable",
+          Pretendard,
+          -apple-system,
+          "Malgun Gothic",
+          "Apple SD Gothic Neo",
+          sans-serif;
+        line-height: 1.6;
+        -webkit-font-smoothing: antialiased;
+      }
+      a {
+        color: var(--brand);
+        text-decoration: none;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+      .layout {
+        display: flex;
+        max-width: 1400px;
+        margin: 0 auto;
+      }
+      nav.toc {
+        position: sticky;
+        top: 0;
+        align-self: flex-start;
+        width: 260px;
+        flex: none;
+        height: 100vh;
+        overflow-y: auto;
+        padding: 28px 18px;
+        border-right: 1px solid var(--border);
+        background: var(--panel);
+      }
+      .toc-brand {
+        display: flex;
+        align-items: baseline;
+        gap: 7px;
+        margin-bottom: 20px;
+      }
+      .toc-brand strong {
+        font-size: 16px;
+        font-weight: 800;
+        letter-spacing: -0.02em;
+        color: var(--text);
+      }
+      .toc-brand span {
+        font-family: var(--mono);
+        font-size: 11px;
+        color: var(--brand);
+      }
+      nav.toc h2 {
+        font-size: 11px;
+        font-family: var(--mono);
+        color: var(--text-dim);
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        margin: 0 0 12px;
+      }
+      nav.toc a {
+        display: block;
+        padding: 6px 10px;
+        border-radius: 6px;
+        color: var(--text-secondary);
+        text-decoration: none;
+        font-size: 13.5px;
+      }
+      nav.toc a:hover {
+        background: var(--brand-soft);
+        color: var(--brand);
+      }
+      nav.toc .group-title {
+        font-weight: 700;
+        margin-top: 16px;
+        font-size: 12.5px;
+        color: var(--brand);
+        opacity: 0.85;
+        padding: 0 10px;
+      }
+      main {
+        flex: 1;
+        min-width: 0;
+        padding: 40px 56px 120px;
+      }
+
+      .cover {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        padding-bottom: 28px;
+        margin-bottom: 28px;
+        border-bottom: 1px solid var(--border);
+      }
+      .cover .logo-badge {
+        width: 56px;
+        height: 56px;
+        border-radius: 14px;
+        background: var(--brand);
+        color: var(--brand-ink);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 900;
+        font-size: 28px;
+        flex: none;
+      }
+      .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        border: 1px solid var(--brand-border);
+        background: var(--brand-soft);
+        border-radius: 999px;
+        padding: 5px 12px;
+        margin-bottom: 12px;
+        font-family: var(--mono);
+        font-size: 11px;
+        letter-spacing: 0.1em;
+        color: var(--brand);
+      }
+      .eyebrow-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--brand);
+      }
+      .cover h1 {
+        margin: 0;
+        font-size: clamp(24px, 3vw, 32px);
+        font-weight: 800;
+        letter-spacing: -0.02em;
+      }
+      .cover p {
+        margin: 4px 0 0;
+        color: var(--text-secondary);
+        font-size: 14.5px;
+      }
+      .pdf-link {
+        font-weight: 700;
+        font-size: 13px;
+      }
+
+      section {
+        margin-bottom: 56px;
+        scroll-margin-top: 20px;
+      }
+      section h2 {
+        font-size: 22px;
+        font-weight: 800;
+        letter-spacing: -0.015em;
+        margin: 0 0 6px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid var(--border);
+      }
+      section > p.desc {
+        color: var(--text-secondary);
+        margin-top: 8px;
+      }
+
+      .screen {
+        background: linear-gradient(
+          180deg,
+          var(--screen-bg-top),
+          var(--screen-bg) 70%
+        );
+        border: 1px solid var(--screen-border);
+        border-top-color: var(--screen-border-top);
+        border-radius: 12px;
+        padding: 20px;
+        margin: 22px 0;
+        box-shadow:
+          0 24px 60px -34px rgba(0, 0, 0, 0.7),
+          inset 0 1px 0 rgba(255, 255, 255, 0.03);
+      }
+      .screen h3 {
+        margin: 0 0 4px;
+        font-size: 16px;
+        font-weight: 700;
+      }
+      /* ①②③④ 같은 유니코드 원문자는 웹폰트(Pretendard 서브셋)마다 글리프 지원이 들쭉날쭉해
+         깨져 보일 수 있어, 폰트에 기대지 않는 원형 배지로 직접 그린다. */
+      .step-h3 {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+      }
+      .step-badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 22px;
+        height: 22px;
+        flex: none;
+        border-radius: 50%;
+        background: var(--brand);
+        color: var(--brand-ink);
+        font-family: var(--mono);
+        font-size: 12px;
+        font-weight: 700;
+      }
+      .screen .path {
+        display: inline-block;
+        font-family: var(--mono);
+        font-size: 11.5px;
+        color: var(--brand);
+        background: var(--brand-soft);
+        border: 1px solid var(--brand-border);
+        border-radius: 999px;
+        padding: 2px 10px;
+        margin-bottom: 10px;
+      }
+      .screen img {
+        width: 100%;
+        border-radius: 8px;
+        border: 1px solid var(--screen-border-top);
+        display: block;
+        margin-top: 10px;
+        cursor: zoom-in;
+        box-shadow: 0 1px 0 rgba(255, 255, 255, 0.06);
+      }
+      .screen ul {
+        margin: 10px 0 0;
+        padding-left: 20px;
+        color: var(--text-secondary);
+      }
+      .screen li {
+        margin-bottom: 4px;
+      }
+      .screen p {
+        color: var(--text-secondary);
+      }
+
+      .note {
+        background: var(--brand-soft);
+        border: 1px solid var(--brand-border);
+        border-left: 3px solid var(--brand);
+        border-radius: 8px;
+        padding: 12px 16px;
+        font-size: 13.5px;
+        color: var(--text-secondary);
+        margin: 14px 0;
+      }
+      .note img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 6px;
+        border: 1px solid var(--screen-border);
+        display: block;
+        margin-top: 8px;
+      }
+      .note.warn {
+        background: var(--danger-soft);
+        border-color: var(--danger-border);
+        border-left-color: var(--danger);
+      }
+      .note b {
+        color: var(--text);
+      }
+
+      code,
+      .kbd {
+        font-family: var(--mono);
+        background: var(--panel-2);
+        border: 1px solid var(--border);
+        color: var(--brand);
+        padding: 1px 6px;
+        border-radius: 4px;
+        font-size: 0.92em;
+      }
+      pre {
+        background: var(--code-bg);
+        color: var(--code-text);
+        border: 1px solid var(--border);
+        padding: 14px 18px;
+        border-radius: 8px;
+        overflow-x: auto;
+        font-size: 13px;
+        line-height: 1.5;
+      }
+      table.info {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 12px 0;
+        font-size: 13.5px;
+      }
+      table.info th,
+      table.info td {
+        border: 1px solid var(--border);
+        padding: 8px 10px;
+        text-align: left;
+      }
+      table.info th {
+        background: var(--panel-2);
+        width: 160px;
+        color: var(--text-secondary);
+        font-weight: 600;
+      }
+      table.info td {
+        color: var(--text);
+      }
+
+      .grid2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 18px;
+      }
+      @media (max-width: 900px) {
+        .grid2 {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      /* 이미지 확대 보기 */
+      .lightbox {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(3, 5, 10, 0.92);
+        z-index: 100;
+        align-items: center;
+        justify-content: center;
+        padding: 30px;
+      }
+      .lightbox.open {
+        display: flex;
+      }
+      .lightbox img {
+        max-width: 100%;
+        max-height: 100%;
+        border-radius: 6px;
+      }
+
+      footer {
+        color: var(--text-dim);
+        font-family: var(--mono);
+        font-size: 11.5px;
+        padding: 30px 56px;
+        border-top: 1px solid var(--border);
+      }
+
+      .qa {
+        margin: 16px 0;
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        overflow: hidden;
+        background: var(--panel);
+      }
+      /* Q/A 문단 안에 <a> 링크가 섞여 있으면(예: "라이선스 섹션을 참고해..."), display:flex는
+         텍스트 노드와 <a>를 각각 별도의 줄바꿈 안 되는 flex 아이템으로 쪼개버려서 문장이
+         한 줄로 삐져나오거나 조각조각 나뉘어 보였다 — flex 대신 "Q."/"A." 태그만 살짝
+         튀어나온 행잉 인덴트로 정렬해 문단이 원래대로 자연스럽게 줄바꿈되게 한다. */
+      .qa .q,
+      .qa .a {
+        margin: 0;
+        padding: 12px 16px 12px 40px;
+        text-indent: -24px;
+      }
+      .qa .q {
+        font-weight: 700;
+        background: var(--panel-2);
+        color: var(--text);
+      }
+      .qa .a {
+        color: var(--text-secondary);
+        border-top: 1px solid var(--border);
+      }
+      .qa .q .tag {
+        color: var(--brand);
+      }
+      .qa .a .tag {
+        color: var(--text-dim);
+      }
+
+      /* PDF로 인쇄할 때는 sticky 사이드바가 매 페이지 빈 여백만 남기므로 숨기고, 다크 배경 대신
+         잉크 절약을 위해 라이트 컬러로 강제 전환한다(화면에서는 평소처럼 다크 테마 그대로 보임). */
+      /* 배경색을 그대로 인쇄/PDF에 남긴다 — 이게 없으면 브라우저가 기본적으로 배경을
+         지우고 텍스트만 인쇄해서, 다크 배경 위 텍스트가 흰 배경에 거의 안 보이게 된다. */
+      html {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+        color-adjust: exact;
+      }
+      @media print {
+        nav.toc {
+          display: none;
+        }
+        .layout {
+          display: block;
+          max-width: none;
+        }
+        main {
+          padding: 0 24px;
+        }
+        .screen {
+          break-inside: avoid;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="layout">
+      <nav class="toc">
+        <div class="toc-brand"><strong>WeWatch</strong><span>2.0</span></div>
+        <h2>목차</h2>
+        <a href="#intro">개요</a>
+        <a href="#install">설치 방법</a>
+        <a href="#login">로그인</a>
+        <a href="#initial-setup">설치 이후 초기 설정</a>
+        <div class="group-title">대시보드</div>
+        <a href="#dashboard">실시간 대시보드</a>
+        <div class="group-title">실시간 조회</div>
+        <a href="#rt-sessions">세션</a>
+        <a href="#rt-locks">트랜잭션 / 락</a>
+        <a href="#rt-replication">복제</a>
+        <a href="#rt-vacuum">Vacuum (PostgreSQL)</a>
+        <a href="#rt-topsql">Top SQL</a>
+        <a href="#rt-misc">기타성능</a>
+        <a href="#rt-alert-log">Alert Log</a>
+        <a href="#rt-oracle">Oracle 전용 화면</a>
+        <a href="#rt-mysql">MySQL 전용 화면</a>
+        <div class="group-title">AWR (Oracle 전용)</div>
+        <a href="#awr">ASH / 시스템 메트릭 / 대기 이벤트</a>
+        <div class="group-title">오브젝트 조회</div>
+        <a href="#obj-db">데이터베이스</a>
+        <a href="#obj-explorer">오브젝트 탐색기</a>
+        <a href="#obj-analyze">통계 정보</a>
+        <a href="#obj-parameters">파라미터</a>
+        <a href="#obj-export">Export / Import</a>
+        <div class="group-title">관리자</div>
+        <a href="#admin-users">사용자 / 역할 관리</a>
+        <a href="#admin-servers">DB 서버 / 클러스터 / 권한</a>
+        <a href="#admin-servers-groups">서버 그룹</a>
+        <a href="#admin-settings">시스템 설정</a>
+        <a href="#license">라이선스</a>
+        <div class="group-title">참고</div>
+        <a href="#qna">자주 묻는 질문 (Q&amp;A)</a>
+      </nav>
+
+      <main>
+        <div class="cover">
+          <div class="logo-badge">W</div>
+          <div>
+            <div class="eyebrow">
+              <span class="eyebrow-dot"></span>USER MANUAL
+            </div>
+            <h1>WeWatch 사용자 매뉴얼</h1>
+            <p>
+              Oracle · MySQL · PostgreSQL · EDB · SQL Server 통합 모니터링
+              데스크톱 앱 — 설치부터 화면별 사용법까지
+            </p>
+            <p>
+              <a href="user-manual.pdf" class="pdf-link">PDF로 다운로드 ↓</a>
+            </p>
+          </div>
+        </div>
+
+        <section id="intro">
+          <h2>개요</h2>
+          <p class="desc">
+            WeWatch는 여러 데이터베이스 서버(Oracle, MySQL, PostgreSQL, EDB, SQL
+            Server)를 하나의 화면에서 통합 모니터링하는 Windows 데스크톱
+            애플리케이션입니다. 실시간 세션·락·복제 상태 확인,
+            오브젝트(테이블/인덱스/뷰 등) 탐색과 DDL 확인, 성능 대시보드,
+            사용자·서버 권한 관리 기능을 제공합니다.
+          </p>
+          <div class="screen">
+            <img
+              src="manual-images/01-dashboard.png"
+              alt="대시보드 - 조회 대상이 없는 경우"
+            />
+          </div>
+        </section>
+
+        <section id="install">
+          <h2>설치 방법</h2>
+          <p class="desc">
+            wewatch는 Windows용 설치 파일(.exe) 하나로 배포됩니다.
+          </p>
+          <ol>
+            <li>
+              배포받은 <code>wewatch-&lt;버전&gt;-setup.exe</code> 파일을
+              실행합니다.
+            </li>
+            <li>
+              설치 마법사의 안내에 따라 설치 위치를 확인하고 진행합니다(별도
+              설정 없이 기본값 그대로 진행해도 됩니다).
+            </li>
+            <li>
+              설치가 끝나면 바탕화면 또는 시작 메뉴에 생성된
+              <b>wewatch</b> 아이콘으로 앱을 실행합니다.
+            </li>
+            <li>
+              앱은 실행 시 내장된 서버를 자동으로 함께 구동하므로, 별도의 서버
+              설치나 실행이 필요하지 않습니다.
+            </li>
+          </ol>
+          <table class="info">
+            <tr>
+              <th>최초 로그인 계정</th>
+              <td>
+                <code>admin</code> / <code>wewatch1234!</code> (최초 로그인 후
+                비밀번호를 변경하세요)
+              </td>
+            </tr>
+            <tr>
+              <th>무료 체험 기간</th>
+              <td>
+                최초 실행일로부터 6개월. 만료 후에는 정식 라이선스 키 입력이
+                필요합니다 — <a href="#license">라이선스</a> 참고
+              </td>
+            </tr>
+          </table>
+          <div class="note warn">
+            <b>제거/재설치 시 주의:</b> 앱을 완전히 종료하면 내장 백엔드
+            프로세스도 함께 종료됩니다. 재설치 시 작업 관리자에서
+            <code>wewatch-backend.exe</code>가 남아있지 않은지 확인하세요.
+          </div>
+        </section>
+
+        <section id="login">
+          <h2>로그인</h2>
+          <p class="desc">
+            아이디/비밀번호를 입력해 로그인합니다.
+            <br />
+            로그인 화면의 DB 타입 선택은 로그인 후 상단 헤더에서 언제든지 조회할
+            서버를 바꿀 수 있으므로 최초 기본값 정도로만 참고하면 됩니다.
+          </p>
+          <div class="screen">
+            <span class="path">/login</span>
+            <img src="manual-images/00-login.png" alt="로그인 화면" />
+            <ul>
+              <li>초기 패스워드는 admin/wewatch1234! 입니다.</li>
+              <li>
+                접속하고자 하는 DB의 타입을 선택합니다. DB타입은 프로그램
+                내에서도 변경할 수 있습니다. (마지막 선택한 DB타입이 로그인
+                화면에 기본값으로 표시됩니다.)
+              </li>
+            </ul>
+          </div>
+        </section>
+
+        <section id="initial-setup">
+          <h2>설치 이후 초기 설정</h2>
+          <p class="desc">
+            설치 후 처음 로그인하면 조회할 서버가 아직 하나도 없는 상태입니다.
+            admin 계정으로 로그인해서 아래 순서대로 등록하면 실제 모니터링을
+            시작할 수 있습니다. 우측 상단 톱니바퀴(⚙) 아이콘을 클릭 후 관리자
+            화면에서 진행합니다.
+            <br />
+            <b
+              >1번 사용자 추가 → 2번 클러스터 등록(선택) → 3번 DB 서버 등록 →
+              4번 접근권한 부여</b
+            >
+          </p>
+
+          <div class="screen">
+            <h3 class="step-h3">
+              <span class="step-badge">1</span>사용자 추가
+            </h3>
+            <span class="path">/admin/users &gt; "사용자 등록" 버튼</span>
+            <img
+              src="manual-images/30-admin-user-create-modal.png"
+              alt="사용자 등록 모달"
+            />
+            <ul>
+              <li>단독으로 사용하는 경우 admin 계정을 사용해도 무방합니다.</li>
+              <li>
+                아이디·비밀번호는 필수이며, 이름·이메일은 선택 입력입니다.
+              </li>
+              <li>
+                역할(role)에 따라 화면/기능 접근 권한이 결정되므로, 미리
+                <a href="#admin-users">역할 관리</a>에서 역할을 만들어두면
+                좋습니다.
+              </li>
+            </ul>
+          </div>
+
+          <div class="screen">
+            <h3 class="step-h3">
+              <span class="step-badge">2</span>클러스터 등록 (RAC/Replication
+              구성이 있는 경우)
+            </h3>
+            <span class="path"
+              >/admin/db-clusters &gt; "클러스터 등록" 버튼</span
+            >
+            <img
+              src="manual-images/31-admin-cluster-create-modal.png"
+              alt="클러스터 등록 모달"
+            />
+            <ul>
+              <li>
+                단일 서버만 모니터링한다면 이 단계는 건너뛰어도 됩니다.
+                Replication(Primary/Standby), RAC 구성으로 여러 서버를 하나의
+                클러스터로 묶어 대시보드에서 함께 보고 싶은 경우에만 먼저
+                클러스터를 만들어둡니다.
+              </li>
+              <li>
+                Postgres, MySQL 클러스터는 Streaming Replication을 선택합니다.
+              </li>
+              <li>Oracle 클러스터는 RAC를 선택합니다.</li>
+            </ul>
+          </div>
+
+          <div class="screen">
+            <h3 class="step-h3">
+              <span class="step-badge">3</span>DB 서버 등록
+            </h3>
+            <span class="path">/admin/db-servers &gt; "서버 등록" 버튼</span>
+            <img
+              src="manual-images/32-admin-server-create-modal.png"
+              alt="서버 등록 모달"
+            />
+            <ul>
+              <li>
+                서버 이름 / DB 유형(Oracle·MySQL·PostgreSQL·MariaDB·EDB·SQL
+                Server) / 역할(Primary·Standby·RAC Node·Standalone)을
+                선택합니다.
+              </li>
+              <li>
+                호스트, 포트, 데이터베이스명과 조회용 계정(아이디/비밀번호)을
+                입력한 뒤
+                <b>"연결 테스트"</b>로 접속 여부를 바로 확인할 수 있습니다.
+              </li>
+              <li>
+                2번에서 클러스터를 만들었다면 "클러스터" 항목에서 선택해
+                소속시킵니다. Standalone서버의 경우 공백으로 남겨둡니다. 버전은
+                자동으로 조회되며, 필요 시 수동으로 입력할 수도 있습니다.
+              </li>
+              <div class="note">
+                <li>
+                  오라클 서버 접속 시 인증관련 에러가 발생한다면 "Oracle Thick
+                  모드 사용" 옵션을 활성화하고 Oracle Client 라이브러리 경로를
+                  지정해야 합니다.
+                </li>
+                <li>
+                  "시스템 설정" - "Oracle Thick 모드 사용"을 활성화 한 후 Oracle
+                  Client 라이브러리(64bit) 경로를 입력합니다. Oracle Instant는
+                  아래 경로에서 다운로드 가능합니다.
+                  <br />
+                  <a
+                    href="https://www.oracle.com/kr/database/technologies/instant-client/downloads.html"
+                    target="_blank"
+                    >Oracle Instant Client 다운로드</a
+                  >
+                </li>
+              </div>
+              <li>
+                접속 계정은 DB별 아래 권한이 필요합니다.
+                <div class="note">
+                  <b>필요한 DB 계정 권한</b> — 조회용 계정 하나가 모든 조회
+                  기능을 담당합니다. 별도의 Kill 전용 계정은 없고, 접근권한
+                  화면에서 특정 사용자/역할에게 "Kill 허용"을 켜주면
+                  <b>같은 계정</b>으로 세션 강제 종료·통계 수집·CSV Import까지
+                  수행합니다. 따라서 조회 계정에 대한 적절한 권한이 필요합니다.
+                  <ul>
+                    <li>
+                      <b>Oracle</b>
+                      <br />
+                      - 조회:
+                      <code
+                        >GRANT CREATE SESSION, SELECT_CATALOG_ROLE TO
+                        WEWATCH;</code
+                      >(AWR/ASH 화면은 Diagnostics &amp; Tuning Pack 라이선스
+                      별도 필요).
+                      <br />
+                      - Kill/통계수집:
+                      <code>GRANT ALTER SYSTEM TO WEWATCH;</code>,
+                      <code>GRANT EXECUTE ON DBMS_STATS TO WEWATCH;</code>
+                    </li>
+                    <li>
+                      <b>MySQL / MariaDB</b>
+                      <br />
+                      - 조회:
+                      <code
+                        >GRANT select, execute, process, file ON *.* TO
+                        wewatch@'%';
+                        <br />
+                        GRANT replication client, replication slave ON *.* TO
+                        wewatch@'%';</code
+                      >,
+                      <br />
+                      - Kill:
+                      <code>GRANT connection_admin ON *.* TO wewatch@'%';</code>
+                      <br />
+                      <code>GRANT super ON *.* TO wewatch@'%';</code>
+                    </li>
+                    <li>
+                      <b>PostgreSQL / EDB</b>
+                      <br />
+                      - 조회:
+                      <code>GRANT pg_monitor TO wewatch;
+                        GRANT USAGE ON SCHEMA <조회_schema> TO <접속계정>
+                      </code>
+                      <br />
+                      - Top SQL 화면은 대상 DB에
+                      <code>pg_stat_statements</code> 확장 설치 필요.
+                      <br />
+                      - Kill/통계수집:
+                      <code>GRANT pg_signal_backend TO wewatch;</code>
+                    </li>
+                  </ul>
+                </div>
+              </li>
+            </ul>
+          </div>
+
+          <div class="screen">
+            <h3 class="step-h3">
+              <span class="step-badge">4</span>접근권한 부여
+            </h3>
+            <span class="path"
+              >/admin/db-server-permissions &gt; "접근권한 등록" 버튼</span
+            >
+            <img
+              src="manual-images/33-admin-permission-create-modal.png"
+              alt="접근권한 등록 모달"
+            />
+            <ul>
+              <li>
+                방금 등록한 서버는 사용자에게는 아직 보이지 않습니다. 대상
+                유형(사용자/역할)과 대상 서버 또는 그룹을 선택해 접근권한을
+                부여해야, 해당 사용자의 헤더 서버 선택 드롭다운과 대시보드에 그
+                서버가 나타납니다.
+              </li>
+              <li>
+                기본적으로는 대상 유형은 "사용자", 사용자 선택에 "admin", 대상
+                서버/그룹 유형은 "서버", 서버 목록에서 방금 등록한 서버를 선택
+                후 확인을 클릭하면 됩니다.
+              </li>
+              <li>
+                "세션 kill 권한"을 활성화하는 경우 해당 서버의 세션을 kill할 수
+                있습니다.
+              </li>
+              <li>
+                등록된 서버가 많은 경우 업무 용도나 시스템 단위로 묶어서
+                관리하는 것이 편리합니다.
+                <a href="#admin-servers-groups">서버 그룹 관리</a>에서 여러 대의
+                서버를 하나의 이름으로 묶어두면, 접근권한 부여 시 그룹 단위로 한
+                번에 권한을 부여할 수 있습니다.
+              </li>
+            </ul>
+          </div>
+
+          <div class="note">
+            <ul>
+              <li>
+                위 단계를 마치면 새로 만든 사용자로 로그인해
+                <a href="#dashboard">대시보드</a>에서 방금 등록한 서버가
+                조회되는지 확인해보세요.
+              </li>
+              <li>
+                만약 서버가 조회되지 않는다면, 접근권한이 제대로 부여되지 않은
+                경우입니다.
+              </li>
+              <li>
+                등록이 정상적으로 이뤄졌다면 화면 상단 오른쪽의 서버 선택
+                드롭다운에서 서버를 선택합니다.
+              </li>
+            </ul>
+          </div>
+        </section>
+
+        <section id="dashboard">
+          <h2>실시간 대시보드</h2>
+          <p class="desc">
+            로그인 직후 보여지는 첫 화면입니다. 상단 헤더 오른쪽의 서버 선택
+            드롭다운(●서버명 배지)에서 조회할 서버를 고르면, 해당 서버(또는
+            클러스터 전체)의 CPU·세션·복제 지연 등 핵심 지표를 실시간 그래프로
+            보여줍니다.
+            <br />
+            화면 중앙 상단의 클러스터 관련 콤보박스를 통해 다른 클러스터를
+            선택할 수 있습니다.
+            <br />
+            화면을 벗어나도 체크된 서버는 성능 데이터를 계속 백그라운드에서
+            수집됩니다. 로그오프 후 재로그인 시에는 초기화됩니다.
+          </p>
+          <div class="screen">
+            <h3>대시보드 기본 화면</h3>
+            <span class="path">/dashboard</span>
+            <img
+              src="manual-images/01-dashboard.png"
+              alt="대시보드 - 조회 대상이 없는 경우"
+            />
+            <ul>
+              <li>
+                상단 탭(전체 / 운영그룹 / DB타입별)으로 서버 목록을 그룹핑해서
+                찾을 수 있습니다.
+              </li>
+              <li>
+                동일 플랫폼의 서버가 좌측에 나열되며, 변경이 필요한 경우 화면
+                상단 중앙의 클러스터 선택 드롭 박스에서 변경합니다.
+              </li>
+              <li>
+                다른 플랫폼의 서버로 변경이 필요한 경우에는 화면 상단 오른쪽의
+                서버 선택 드롭 박스에서 변경합니다.
+              </li>
+              <li>
+                서버명 앞의 색상 점은 최근 접속 테스트 상태(초록=정상,
+                빨강=실패)를 나타냅니다.
+              </li>
+              <li>
+                가운데 그래프 영역 우측 상단의 <b>"그래프 설정"</b>(톱니바퀴
+                아이콘) 버튼을 누르면 표시할 지표를 직접 고를 수 있습니다.
+                아무것도 고르지 않은 계정에는 DB 유형별로 실무에서 가장 많이
+                보는 지표(Oracle: CPU·Active Session·Buffer Cache Hit 등, MySQL:
+                QPS·Threads Running·InnoDB Buffer Pool Hit Ratio 등,
+                PostgreSQL/EDB: TPS·Active Session·Cache Hit Ratio 등)가
+                기본값으로 채워져 있어, 처음 접속했을 때도 바로 핵심 지표부터 볼
+                수 있습니다.
+              </li>
+              <li>
+                한 번 고른 지표 구성은 계정 × DB 엔진 단위로 서버에 저장되어,
+                다른 PC에서 같은 계정으로 로그인해도 그대로 유지됩니다.
+              </li>
+            </ul>
+          </div>
+        </section>
+
+        <section id="rt-sessions">
+          <h2>실시간 조회 — 세션</h2>
+          <p class="desc">
+            좌측 실시간 조회 탭에서 세션·트랜잭션·Top SQL 등을 실시간으로
+            조회합니다. 모든 화면은 자동 갱신 체크박스로 주기적 새로고침을 켜고
+            끌 수 있습니다.
+          </p>
+          <div class="screen">
+            <h3>세션</h3>
+            <span class="path">/realtime/sessions</span>
+            <img src="manual-images/02-realtime-sessions.png" alt="세션 화면" />
+            <ul>
+              <li>
+                현재 연결된 세션과 실행 중인 SQL을 조회합니다. "Idle 포함"
+                체크박스로 유휴 세션 표시 여부를 조절할 수 있습니다.
+              </li>
+              <li>
+                문제가 발생한 세션의 경우 빨간색 배지로 강조되어, 문제가 발생한
+                상황을 바로 알아챌 수 있습니다.
+              </li>
+              <li>
+                화면 오른쪽 상단의 필터창을 통해 세션, 사용자, SQL 등을 필터링할
+                수 있습니다.
+              </li>
+            </ul>
+          </div>
+          <div class="screen">
+            <h3>세션 상세</h3>
+            <span class="path">/realtime/sessions</span>
+            <img
+              src="manual-images/02-01-realtime-session-detail.png"
+              alt="세션 화면"
+              style="width: 50%"
+            />
+            <ul>
+              <li>
+                세션 클릭 시 상세 세션 정보 및 SQL, 실행계획 등을 확인할 수
+                있습니다.
+              </li>
+              <li>
+                오라클의 경우 sql_id를 클릭하면 해당 SQL의 상세정보를 확인할 수
+                있습니다.
+              </li>
+            </ul>
+          </div>
+        </section>
+
+        <section id="rt-locks">
+          <h2>실시간 조회 — 트랜잭션 / 락</h2>
+          <p class="desc">
+            진행 중인 트랜잭션과 블로킹(잠금 대기) 여부를 한 화면에서
+            확인합니다. 상단 표에서 트랜잭션을 클릭하면 세션 상세 정보와 실행
+            중이던 SQL, 실행계획까지 확인할 수 있습니다.
+          </p>
+          <div class="screen">
+            <h3>트랜잭션</h3>
+            <span class="path">/realtime/locks</span>
+            <img
+              src="manual-images/03-realtime-locks.png"
+              alt="트랜잭션 화면"
+            />
+            <ul>
+              <li>화면 상단은 진행 중인 트랜잭션을 확인합니다.</li>
+              <li>
+                화면 하단은 블로킹 세션 존재 시 락트리를 확인합니다.(PostgreSQL
+                / MySQL 서버 선택 시, Oracle은 아래 "Oracle 전용 화면 > 락"에서
+                확인)
+              </li>
+              <li>
+                락트리 각 항목에는 대기 상태(BLOCKER / BLOCKING / WAITER)와 함께
+                <b>DB → User → Object</b> 순서로 어느 계정이 어느 테이블을 두고
+                경합 중인지 표시되어, 어떤 세션을 종료해야 나머지가 풀리는지
+                한눈에 파악할 수 있습니다.
+              </li>
+              <li>락트리의 항목을 클릭해도 세션 상세 드로어가 열립니다.</li>
+            </ul>
+          </div>
+        </section>
+
+        <section id="rt-replication">
+          <h2>실시간 조회 — 복제 (Oracle / MySQL / PostgreSQL / SQL Server)</h2>
+          <p class="desc">
+            MySQL / PostgreSQL / SQL Server는 Primary/Standby 간 복제 상태를
+            확인합니다. Oracle의 경우 Data Guard 복제 상태를 확인합니다.
+            <br />
+            복제 구성이 안되어 있는 경우는 화면이 비어 보이며, 복제 구성이 되어
+            있는 서버만 선택하면 복제 상태를 확인할 수 있습니다.
+          </p>
+          <div class="screen">
+            <h3>MySQL / PostgreSQL</h3>
+            <span class="path">/realtime/replication</span>
+            <img
+              src="manual-images/04-realtime-replication.png"
+              alt="복제 모니터 화면"
+            />
+            <ul>
+              <li>
+                상단 카드에서 Primary/Standby 간 전송 지연과 Standby 상태를
+                한눈에 보고, 아래 표에서 Standby별 Host/Port/상태/전송 지연/적용
+                지연을 확인합니다.
+              </li>
+            </ul>
+          </div>
+          <div class="screen">
+            <h3>Oracle (Data Guard)</h3>
+            <span class="path">/realtime/replication</span>
+            <img
+              src="manual-images/47-realtime-replication-oracle.png"
+              alt="Oracle 복제(Data Guard) 화면"
+            />
+            <ul>
+              <li>
+                Oracle을 선택하면
+                <code>V$DATABASE</code>(역할/보호모드/스위치오버 상태) +
+                <code>V$ARCHIVE_DEST_STATUS</code>(목적지별 전송 상태) +
+                <code>V$DATAGUARD_STATS</code>(전송/적용 지연)를 조합해 Data
+                Guard 구성을 보여줍니다.
+              </li>
+              <li>
+                상단 카드에서 Database Role · Protection Mode · 상태 · Standby
+                목적지 수를 한눈에 보고, 아래 표에서 목적지별
+                Destination/Target/상태/Archived·Applied Seq#/Transport
+                Lag/Apply Lag를 확인합니다.
+              </li>
+            </ul>
+          </div>
+        </section>
+
+        <section id="rt-vacuum">
+          <h2>실시간 조회 — Vacuum (PostgreSQL 전용)</h2>
+          <p class="desc">
+            PostgreSQL, EDB의 경우 Autovacuum 현황, 테이블별 Dead Tuple 비율,
+            Bloat(팽창률) 추정을
+            <b> <code>진행 중 / Dead Tuple / Bloat</code></b> 세 탭으로 나눠
+            확인합니다.
+          </p>
+          <div class="screen">
+            <h3>진행 중</h3>
+            <span class="path">/realtime/vacuum &gt; 진행 중 탭</span>
+            <img
+              src="manual-images/05-realtime-vacuum.png"
+              alt="Vacuum - 진행 중 탭"
+            />
+            <ul>
+              <li>
+                상단 카드에서 실행 중인 Vacuum 수 · 최근 1시간 내 Autovacuum
+                실행 수 · Dead Tuple 40% 이상인 위험 테이블 수를 한눈에 파악할
+                수 있습니다.
+              </li>
+              <li>
+                현재 실행 중인 Vacuum을 PID/DB/User/Table/Phase/진행률(Scan
+                %·Vacuum %) 단위로 보여줍니다 —
+                <b>PostgreSQL 17 이상에서만 지원</b>됩니다(그보다 낮은
+                버전에서는 "실행 중인 Vacuum이 없습니다"로 항상 비어 보입니다).
+              </li>
+            </ul>
+          </div>
+          <div class="screen">
+            <h3>Dead Tuple</h3>
+            <span class="path">/realtime/vacuum &gt; Dead Tuple 탭</span>
+            <img
+              src="manual-images/05b-realtime-vacuum-dead-tuple.png"
+              alt="Vacuum - Dead Tuple 탭"
+            />
+            <ul>
+              <li>
+                테이블별 Live/Dead Tuple 수와 비율(%), 마지막 Autovacuum/수동
+                Vacuum 시각을 확인합니다. Dead % 40% 이상이면
+                <b>CRITICAL</b> 배지로 강조됩니다.
+              </li>
+            </ul>
+          </div>
+          <div class="screen">
+            <h3>Bloat</h3>
+            <span class="path">/realtime/vacuum &gt; Bloat 탭</span>
+            <img
+              src="manual-images/05c-realtime-vacuum-bloat.png"
+              alt="Vacuum - Bloat 탭"
+            />
+            <ul>
+              <li>
+                <code>pg_stats</code>/<code>pg_class</code> 통계 기반으로
+                테이블과 btree 인덱스의 팽창률(Bloat %)을 추정합니다(별도 확장
+                설치 없이 계산되며, ANALYZE 이후일수록 정확합니다). 30% 이상이면
+                팽창 의심으로 카운트됩니다.
+              </li>
+              <li>
+                더 정확한 값이 필요하면 <code>pgstattuple()</code>/
+                <code>pgstatindex()</code> 확장을 직접 사용하도록 안내 문구가
+                화면 하단에 표시됩니다.
+              </li>
+            </ul>
+          </div>
+        </section>
+
+        <section id="rt-misc">
+          <h2>실시간 조회 — 기타성능</h2>
+          <p class="desc">DB 유형에 따라 추가적인 성능 화면을 제공합니다.</p>
+          <div class="screen">
+            <span class="path">/realtime/misc</span>
+            <img
+              src="manual-images/42-realtime-misc-sysmetric.png"
+              alt="기타성능 - SysMetric History 탭"
+            />
+            <table class="info">
+              <tr>
+                <th>Oracle</th>
+                <td>
+                  SysMetric History · Top Wait Events · Undo · Redo · Archive
+                  History · 백업(RMAN) · Parse · DML
+                </td>
+              </tr>
+              <tr>
+                <th>MySQL</th>
+                <td>
+                  Top Wait Events · Full Scan SQL · TOP I/O Table · Unused Index
+                  · Redundant Index
+                </td>
+              </tr>
+              <tr>
+                <th>PostgreSQL / EDB</th>
+                <td>Top Wait Events · I/O Statistics · Unused Index 등</td>
+              </tr>
+            </table>
+            <ul>
+              <li>
+                스크린샷은 Oracle의 <b>SysMetric History</b> 탭입니다.
+                <code>GV$SYSMETRIC_HISTORY</code>(인스턴스당 최근 약 1시간, 60초
+                간격)를 바탕으로 Host CPU(%) · Logical Reads/s · Physical
+                Reads/s · User Commits/s · User Calls/s · Hard Parse/s 여섯 개
+                그래프를 인스턴스별로 보여줍니다.
+                <b>AWR/Diagnostics Pack 라이선스가 없는 환경에서도</b> 조회되는
+                것이 특징이라, 위 AWR 화면들을 못 쓰는 경우에도 최근 1시간
+                정도의 흐름은 이 탭으로 확인할 수 있습니다.
+              </li>
+              <li>
+                MySQL의 경우 Full Scan SQL / Unused Index / Redundant Index 탭은
+                인덱스를 안 쓰거나 비효율적으로 쓰는 SQL·테이블을 찾을 때 특히
+                유용합니다.
+              </li>
+            </ul>
+          </div>
+        </section>
+
+        <section id="rt-alert-log">
+          <h2>실시간 조회 — Alert Log (Oracle / MySQL / SQL Server)</h2>
+          <div class="screen">
+            <span class="path">/realtime/alert-log</span>
+            <img
+              src="manual-images/46-realtime-alert-log.png"
+              alt="Alert Log 화면"
+            />
+            <ul>
+              <li>
+                Oracle은 <code>GV$DIAG_ALERT_EXT</code>(모든 인스턴스의 Alert
+                Log를 파일 대신 SQL로 조회), MySQL은
+                <code>performance_schema.error_log</code>를, SQL Server는
+                <code>sys.sp_readerrorlog</code>를 조회합니다. PostgreSQL은
+                동등한 조회 수단이 없어 이 메뉴 자체가 보이지 않습니다.
+              </li>
+              <li>
+                상단의 <b>최근 1시간 / 4시간 / 24시간 / 7일</b> 버튼으로 조회
+                기간을 빠르게 바꿀 수 있고, 우측의 <b>레벨 필터</b>(ERROR /
+                WARNING / INFO / TRACE)와 <b>메시지 검색</b>으로 원하는 로그만
+                좁혀볼 수 있습니다. 둘 다 이미 받아온 결과 안에서 즉시
+                걸러지므로 다시 조회할 필요가 없습니다.
+              </li>
+            </ul>
+          </div>
+        </section>
+
+        <section id="rt-oracle">
+          <h2>실시간 조회 — Oracle 전용 화면</h2>
+          <p class="desc">
+            아래 화면들은 Oracle 서버를 선택했을 때만 좌측 메뉴에 나타납니다.
+          </p>
+          <div class="grid2">
+            <div class="screen">
+              <h3>락 (v$lock)</h3>
+              <span class="path">/realtime/lock-detail</span>
+              <img
+                src="manual-images/12-realtime-lock-detail.png"
+                alt="Oracle 락 화면"
+              />
+              <ul>
+                <li>
+                  상단 표에서 세션이 들고 있거나 기다리는 락 목록을 확인하고,
+                  하단 락트리에서 블로커/대기자 관계를 한눈에 봅니다.
+                </li>
+                <li>
+                  행(row) 단위 락(TX)도 이제 어떤 테이블을 두고 경합 중인지
+                  오브젝트명이 정확히 표시됩니다(예전에는 "TX-ROW LOCK"이라는
+                  값으로만 나와 어떤 테이블인지 알 수 없었습니다).
+                </li>
+              </ul>
+            </div>
+            <div class="screen">
+              <h3>Temp</h3>
+              <span class="path">/realtime/tempsegs</span>
+              <img
+                src="manual-images/13-realtime-tempsegs.png"
+                alt="Temp 세그먼트 화면"
+              />
+              <ul>
+                <li>Temp 사용량을 확인합니다.</li>
+              </ul>
+            </div>
+            <div class="screen">
+              <h3>
+                Undo
+                <span
+                  style="
+                    font-weight: 400;
+                    font-size: 13px;
+                    color: var(--text-secondary);
+                  "
+                  >(기타성능 탭)</span
+                >
+              </h3>
+              <span class="path">/realtime/misc &gt; Undo 탭</span>
+              <img
+                src="manual-images/14-realtime-undo.png"
+                alt="Undo 모니터 화면"
+              />
+              <ul>
+                <li>
+                  Undo 사용량을 확인합니다. Active / Expired / Unexpired 로
+                  구분하여 표시됩니다.
+                </li>
+              </ul>
+            </div>
+            <div class="screen">
+              <h3>
+                Redo / Archive
+                <span
+                  style="
+                    font-weight: 400;
+                    font-size: 13px;
+                    color: var(--text-secondary);
+                  "
+                  >(기타성능 탭)</span
+                >
+              </h3>
+              <span class="path">/realtime/misc &gt; Redo 탭</span>
+              <img
+                src="manual-images/15-realtime-redo.png"
+                alt="Redo Archive 화면"
+              />
+              <ul>
+                <li>Redo 및 Archive 상태를 확인합니다.</li>
+              </ul>
+            </div>
+            <div class="screen">
+              <h3>
+                Archive History
+                <span
+                  style="
+                    font-weight: 400;
+                    font-size: 13px;
+                    color: var(--text-secondary);
+                  "
+                  >(기타성능 탭)</span
+                >
+              </h3>
+              <span class="path">/realtime/misc &gt; Archive History 탭</span>
+              <img
+                src="manual-images/16-realtime-archive.png"
+                alt="Archive History 화면"
+              />
+              <ul>
+                <li>
+                  Archive History를 확인합니다.하단 표의 일자를 클릭 시 해당
+                  일자의 Archive 정보를 그래프로 확인할 수 있습니다.
+                </li>
+              </ul>
+            </div>
+            <div class="screen">
+              <h3>
+                백업(RMAN)
+                <span
+                  style="
+                    font-weight: 400;
+                    font-size: 13px;
+                    color: var(--text-secondary);
+                  "
+                  >(기타성능 탭)</span
+                >
+              </h3>
+              <span class="path">/realtime/misc &gt; 백업(RMAN) 탭</span>
+              <img
+                src="manual-images/48-realtime-misc-backup.png"
+                alt="백업(RMAN) 화면"
+              />
+              <ul>
+                <li>
+                  <code>V$RMAN_BACKUP_JOB_DETAILS</code>로 최근 30일간의 RMAN
+                  백업 작업 이력(작업유형/상태/시작·종료시간/소요시간/
+                  Input·Output Size/압축률)을 확인합니다. 상태가 FAILED면
+                  빨간색, RUNNING이면 파란색 배지로 표시됩니다.
+                </li>
+                <li>
+                  표 위쪽에는 <code>V$RECOVERY_AREA_USAGE</code> 기반 FRA(Fast
+                  Recovery Area) 사용률이 함께 표시됩니다 — FRA가 꽉 차면
+                  백업/아카이브가 실패하는 흔한 원인이라 같은 화면에서 바로
+                  확인할 수 있게 했습니다(80% 이상 주황색, 95% 이상 빨간색
+                  경고).
+                </li>
+              </ul>
+            </div>
+            <div class="screen">
+              <h3>
+                Parse
+                <span
+                  style="
+                    font-weight: 400;
+                    font-size: 13px;
+                    color: var(--text-secondary);
+                  "
+                  >(기타성능 탭)</span
+                >
+              </h3>
+              <span class="path">/realtime/misc &gt; Parse 탭</span>
+              <img
+                src="manual-images/17-realtime-parsing.png"
+                alt="Parse 통계 화면"
+              />
+              <ul>
+                <li>
+                  Hard Parse 통계를 확인합니다. 바인드 변수를 사용하지 않는
+                  쿼리에 대한 정보를 제공합니다.
+                </li>
+              </ul>
+            </div>
+            <div class="screen">
+              <h3>
+                DML
+                <span
+                  style="
+                    font-weight: 400;
+                    font-size: 13px;
+                    color: var(--text-secondary);
+                  "
+                  >(기타성능 탭)</span
+                >
+              </h3>
+              <span class="path">/realtime/misc &gt; DML 탭</span>
+              <img
+                src="manual-images/18-realtime-dml.png"
+                alt="DML 통계 화면"
+              />
+              <ul>
+                <li>
+                  DML 통계를 확인합니다. DML이 빈번히 발생되고 테이블을 수정하는
+                  경우의 통계를 제공합니다.
+                </li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <section id="rt-mysql">
+          <h2>실시간 조회 — MySQL 전용 화면</h2>
+          <p class="desc">
+            아래 화면들은 MySQL 서버를 선택했을 때만 좌측 메뉴에 나타납니다.
+          </p>
+          <div class="grid2">
+            <div class="screen">
+              <h3>메타데이터 락</h3>
+              <span class="path">/realtime/metadata-locks</span>
+              <img
+                src="manual-images/19-realtime-metadata-locks.png"
+                alt="MySQL 메타데이터 락 화면"
+              />
+              <ul>
+                <li>
+                  메타데이터 락 상태를 확인합니다. 메타데이터 락은 테이블이나
+                  인덱스에 대한 접근을 제어하는 데 사용됩니다.
+                </li>
+              </ul>
+            </div>
+
+            <div class="screen">
+              <h3>스레드 메모리</h3>
+              <span class="path">/realtime/thread-memory</span>
+              <img
+                src="manual-images/20-realtime-thread-memory.png"
+                alt="스레드 메모리 화면"
+              />
+              <ul>
+                <li>
+                  스레드별 메모리 상태를 확인합니다. 메모리 사용량이 높은
+                  스레드를 식별할 수 있습니다.
+                </li>
+              </ul>
+            </div>
+            <div class="screen">
+              <h3>InnoDB Status</h3>
+              <span class="path">/realtime/innodb-status</span>
+              <img
+                src="manual-images/21-realtime-innodb-status.png"
+                alt="InnoDB Status 화면"
+              />
+              <ul>
+                <li>
+                  InnoDB 상태를 확인합니다. 상단 카드를 통해 요약된 상태를
+                  확인할 수 있습니다.
+                </li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <section id="rt-topsql">
+          <h2>실시간 조회 — TOP SQL</h2>
+          <p class="desc">TOP SQL을 확인합니다.</p>
+          <div class="screen">
+            <h3>Top SQL</h3>
+            <span class="path">/realtime/topsql</span>
+            <img
+              src="manual-images/06-realtime-topsql.png"
+              alt="Top SQL 화면"
+            />
+            <ul>
+              <li>CPU 등 다양한 기준으로 Top SQL을 확인합니다.</li>
+              <li>SQL 선택 시 상세 정보를 확인 할 수 있습니다.</li>
+            </ul>
+          </div>
+        </section>
+
+        <section id="awr">
+          <h2>AWR — ASH / 시스템 메트릭 / 대기 이벤트 (Oracle 전용)</h2>
+          <p class="desc">
+            <b>"AWR"</b> 그룹은 Oracle 서버를 선택했을 때만 나타나는, 과거
+            시점의 성능 데이터를 분석하는 기능들을 제공합니다. "실시간 조회"와
+            달리, AWR은 <code>DBA_HIST_*</code> 뷰에 주기적으로 쌓인 스냅샷을
+            바탕으로 "그때 무슨 일이 있었는지"를 되짚어 볼 때 씁니다 — 예를 들어
+            어제 새벽에 배치가 느려졌다는 리포트를 받았을 때, 그 시간대만 골라
+            어떤 SQL·대기 이벤트가 원인이었는지 확인할 수 있습니다.
+          </p>
+          <div class="grid2">
+            <div class="screen">
+              <h3>ASH</h3>
+              <span class="path">/awr/ash</span>
+              <img src="manual-images/36-awr-ash.png" alt="AWR ASH 화면" />
+              <ul>
+                <li>
+                  Active Session History(초 단위로 "그 순간 활동 중이던 세션"
+                  샘플) 기반으로 대기 이벤트 추이를 시계열 차트로 보여줍니다.
+                </li>
+                <li>
+                  차트를 클릭하거나 드래그해서 구간을 좁히면, 그 구간에 해당하는
+                  세션 상세와 Top SQL / Top Session / Top Wait Event 요약이 즉시
+                  갱신됩니다(각 5개씩 대표 항목만 간결하게 보여줍니다).
+                </li>
+                <li>
+                  특정 SQL_ID나 모듈명으로 필터링해서 "이 SQL이 실행되는 동안
+                  주로 어떤 대기가 있었는지"처럼 좁혀서 볼 수도 있습니다.
+                </li>
+              </ul>
+            </div>
+            <div class="screen">
+              <h3>시스템 메트릭</h3>
+              <span class="path">/awr/metrics</span>
+              <img
+                src="manual-images/37-awr-metrics.png"
+                alt="AWR 시스템 메트릭 화면"
+              />
+              <ul>
+                <li>
+                  CPU, I/O, 메모리 등 인스턴스 단위 시스템 지표의 시계열 추이를
+                  확인합니다.
+                </li>
+                <li>
+                  이를 통해 "어제 새벽에 배치가 느려진 이유가 CPU 부족
+                  때문이었는지, I/O 병목 때문이었는지"처럼 원인을 좁혀볼 수
+                  있습니다.
+                </li>
+              </ul>
+            </div>
+            <div class="screen">
+              <h3>대기 이벤트</h3>
+              <span class="path">/awr/wait-events</span>
+              <img
+                src="manual-images/38-awr-wait-events.png"
+                alt="AWR 대기 이벤트 화면"
+              />
+              <ul>
+                <li>
+                  선택한 기간 동안 가장 많은 시간을 차지한 대기 이벤트를 순위로
+                  보여줍니다. 이를 통해 주요한 병목 지점을 빠르게 파악할 수
+                  있습니다.
+                </li>
+                <li>
+                  대기 횟수·총 대기시간·평균 대기시간과 함께, 전체 대비
+                  비중(%)이 막대 그래프로 표시되어 상대적인 비중을 한눈에 비교할
+                  수 있습니다.
+                </li>
+              </ul>
+            </div>
+            <div class="screen">
+              <h3>구간 비교</h3>
+              <span class="path">/awr/compare</span>
+              <img
+                src="manual-images/39-awr-compare.png"
+                alt="AWR 구간 비교 화면"
+              />
+              <ul>
+                <li>
+                  서로 다른 두 시간 구간(예: 장애 발생 전/후, 어제 같은
+                  시간대/오늘)의 성능 지표를 나란히 비교합니다.
+                </li>
+                <li>
+                  평상 시 대비 특정 구간에서 CPU·세션·대기 이벤트·Top SQL 등
+                  어떤 지표가 급격히 변했는지 확인할 수 있습니다.
+                </li>
+              </ul>
+            </div>
+            <div class="screen">
+              <h3>SQL 성능</h3>
+              <span class="path">/awr/top-sql</span>
+              <img
+                src="manual-images/40-awr-top-sql.png"
+                alt="AWR SQL 성능 화면 — Top SQL 탭"
+              />
+              <ul>
+                <li>
+                  <code>
+                    Top SQL / Unstable SQL / Parallel Downgrade / SQL Response
+                  </code>
+                  4개 탭으로 구성됩니다.
+                </li>
+                <li>
+                  <b><code>Top SQL</code></b
+                  >: AWR 스냅샷 기준으로 부하가 컸던 SQL 순위를 확인합니다.
+                </li>
+                <li>
+                  <b><code>Unstable SQL</code></b
+                  >: 같은 SQL이 실행계획이 바뀌면서 평균 실행시간이 널뛰는
+                  경우를 찾습니다 — 최댓값과 최솟값의 차이(Diff Secs, 기본
+                  2초)가 큰 SQL만 골라 보여줍니다.
+                </li>
+                <li>
+                  <b><code>Parallel Downgrade</code></b
+                  >: Parallel 실행이 요청한 병렬도보다 적게 배정되거나 직렬로
+                  전환된 비율을 시간대별로 확인합니다.
+                </li>
+                <li>
+                  <b><code>SQL Response</code></b
+                  >: SQL Service Response Time 지표 추이를 인스턴스별 차트와
+                  상세 테이블로 함께 보여줍니다.
+                </li>
+              </ul>
+            </div>
+            <div class="screen">
+              <h3>SQL History</h3>
+              <span class="path">/awr/sql-history</span>
+              <img
+                src="manual-images/41-awr-sql-history.png"
+                alt="AWR SQL History 화면"
+              />
+              <ul>
+                <li>
+                  특정 SQL_ID의 과거 실행 이력(실행 횟수, 평균 소요시간,
+                  실행계획 변경 여부 등)을 시간순으로 추적합니다.
+                </li>
+                <li>
+                  AWR 분석 화면에서 sql_id를 클릭하면 바로 이 화면으로 이동해,
+                  그 SQL이 과거에 언제 실행됐고 어떤 성능을 보였는지 확인할 수
+                  있습니다.
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="note">
+            AWR 화면은 <code>DBA_HIST_*</code> 뷰 조회 권한이 필요합니다. 조회용
+            계정에 권한이 없다면 접속 정보를 등록한 관리자에게
+            <code>SELECT_CATALOG_ROLE</code> 부여를 요청하세요. 기본 조회 기간은
+            짧아서(예: 최근 1시간) 그 사이에 AWR 스냅샷이 없으면 "비교 가능한
+            데이터가 없습니다"로 보일 수 있습니다 — 그럴 땐 상단의
+            <b>"최근 24시간"</b> 이나 <b>"최근 7일"</b> 버튼으로 조회 기간을
+            넓혀보세요.
+          </div>
+        </section>
+
+        <section id="obj-db">
+          <h2>오브젝트 조회 — 데이터베이스</h2>
+          <div class="screen">
+            <span class="path">/objects/db</span>
+            <img
+              src="manual-images/07-objects-db.png"
+              alt="데이터베이스 인스턴스 정보 화면"
+            />
+            <ul>
+              <li>
+                <code>
+                  인스턴스 정보, 계정 정보, 데이터베이스/테이블스페이스,
+                  Files</code
+                >
+                등 인스턴스 레벨 구성을 탭으로 확인합니다.
+              </li>
+              <li>
+                인스턴스 정보는 기본적인 데이터베이스 구성 현황을 보여줍니다.
+              </li>
+              <li>
+                계정 정보는 인스턴스에 존재하는 계정과 권한을 확인합니다. 계정
+                클릭 시 권한 상세를 확인할 수 있습니다.
+              </li>
+              <li>
+                데이터베이스/테이블스페이스는 인스턴스에 존재하는 데이터베이스와
+                테이블스페이스를 확인합니다. 클릭 시 상세 정보를 확인할 수
+                있습니다.
+              </li>
+            </ul>
+          </div>
+        </section>
+
+        <section id="obj-explorer">
+          <h2>오브젝트 조회 — 오브젝트 탐색기</h2>
+          <p class="desc">
+            좌측 트리에서 스키마별 테이블/뷰/함수/시퀀스/트리거를 탐색하고, 우측
+            탭에서 컬럼·인덱스·제약조건·파티션·트리거·권한·DDL을 확인합니다.
+          </p>
+          <div class="note">
+            <b>탭 구성이 DB 엔진마다 다릅니다.</b>
+          </div>
+          <div class="screen">
+            <h3>테이블 상세 (PostgreSQL 예시)</h3>
+            <span class="path">/objects/explorer</span>
+            <img
+              src="manual-images/08-objects-explorer.png"
+              alt="오브젝트 탐색기 - 테이블 상세"
+            />
+            <ul>
+              <li>
+                DDL 탭에서는 <code>CREATE TABLE</code> 문뿐 아니라, MySQL은
+                트리거·권한(GRANT) 문까지 함께 재구성해서 보여줍니다 — DDL만
+                복사해도 트리거/권한까지 그대로 재현할 수 있습니다.
+              </li>
+              <li>
+                DDL 안의 <code>SELECT</code>·<code>CREATE</code>·<code
+                  >TABLE</code
+                >
+                같은 SQL 예약어는 색상으로 강조되어, 문장이 길어져도 구조를
+                빠르게 훑어볼 수 있습니다.
+              </li>
+            </ul>
+          </div>
+
+          <div class="note">
+            헤더에서 조회 서버를 바꾸면 탐색기의 선택 상태(고르고 있던 오브젝트,
+            검색어, 트리 펼침 상태)가 자동으로 초기화됩니다.
+          </div>
+        </section>
+
+        <section id="obj-analyze">
+          <h2>오브젝트 조회 — 통계 정보</h2>
+          <div class="screen">
+            <span class="path">/objects/analyze</span>
+            <img
+              src="manual-images/09-objects-analyze.png"
+              alt="통계 정보 화면"
+            />
+            <ul>
+              <li>
+                테이블별 행 수, 크기, Stale 여부 등을 확인하고, 필요 시
+                체크박스로 선택해 통계 수집을 실행할 수 있습니다.
+              </li>
+              <li>
+                통계 수집 시 실행계획이 변경될 수 있으므로, 통계 수집 전후의
+                실행계획을 개발 DB에서 우선 비교해보는 것이 좋습니다.
+              </li>
+            </ul>
+          </div>
+        </section>
+
+        <section id="obj-parameters">
+          <h2>오브젝트 조회 — 파라미터</h2>
+          <p class="desc">
+            인스턴스 파라미터(Oracle의 <code>V$PARAMETER</code>, PostgreSQL의
+            <code>pg_settings</code>, MySQL의
+            <code>SHOW GLOBAL VARIABLES</code>에 해당)의 이름과 현재 값을 한
+            화면에서 검색·확인합니다.
+          </p>
+          <div class="screen">
+            <span class="path">/objects/parameters</span>
+            <img
+              src="manual-images/44-objects-parameters-mysql.png"
+              alt="파라미터 화면 (MySQL)"
+            />
+            <ul>
+              <li>
+                파라미터명으로 검색해 원하는 항목만 좁혀 볼 수 있습니다(부분
+                일치, 예: "buffer"를 입력하면 이름에 buffer가 들어간 파라미터가
+                모두 나옵니다).
+              </li>
+              <li>
+                <b>MySQL은 Description(설명)과 Recommend(권장값) 칼럼</b>이
+                추가로 제공됩니다. 위 스크린샷의
+                <code>autocommit</code> 항목처럼, 설명 칼럼에는 "mysql의 경우
+                select도 락을 점유하기 때문에 autocommit mode 권장"처럼 그
+                파라미터가 왜 중요한지까지 안내되고, Recommend 칼럼에는 권장
+                설정값(이 경우 ON)이 함께 표시되어 파라미터 이름만으로는 알기
+                어려운 맥락을 바로 옆에서 확인할 수 있습니다.
+              </li>
+            </ul>
+          </div>
+        </section>
+
+        <section id="obj-export">
+          <h2>오브젝트 조회 — Export / Import</h2>
+          <div class="screen">
+            <span class="path">/objects/export-import</span>
+            <img
+              src="manual-images/10-objects-export-import.png"
+              alt="Export Import 화면"
+            />
+            <p>
+              테이블 데이터를 CSV로 내보내거나, CSV 파일을 업로드해 테이블로
+              가져올 수 있습니다.
+            </p>
+          </div>
+        </section>
+
+        <section id="admin-users">
+          <h2>관리자 — 사용자 / 역할 관리</h2>
+          <p class="desc">
+            우측 상단 톱니바퀴 아이콘(⚙)을 눌러 관리자 화면으로 이동합니다.
+            관리자 화면은 별도 좌측 메뉴 구성을 갖습니다.
+          </p>
+          <div class="grid2">
+            <div class="screen">
+              <h3>사용자 관리</h3>
+              <span class="path">/admin/users</span>
+              <img
+                src="manual-images/22-admin-users.png"
+                alt="사용자 관리 화면"
+              />
+              <p>
+                계정 등록/수정/비활성화, admin 계정으로 로그인한 경우에 한해
+                계정 완전 삭제도 가능합니다.
+              </p>
+            </div>
+            <div class="screen">
+              <h3>역할 관리</h3>
+              <span class="path">/admin/roles</span>
+              <img
+                src="manual-images/23-admin-roles.png"
+                alt="역할 관리 화면"
+              />
+              <p>역할별로 화면/기능 권한(permission)을 부여합니다.</p>
+            </div>
+          </div>
+        </section>
+
+        <section id="admin-servers">
+          <h2>관리자 — DB 서버 / 클러스터 / 권한</h2>
+          <div class="grid2">
+            <div class="screen">
+              <h3>DB 서버 관리</h3>
+              <span class="path">/admin/db-servers</span>
+              <img
+                src="manual-images/24-admin-db-servers.png"
+                alt="DB 서버 관리 화면"
+              />
+              <ul>
+                <li>
+                  모니터링할 DB 서버를 등록/수정합니다. "서버 등록" 버튼으로
+                  호스트·포트·접속 계정을 입력하고, <b>"연결 테스트"</b>로 즉시
+                  접속 여부를 확인할 수 있습니다.
+                </li>
+                <li>
+                  기존 서버를 수정할 때 계정/비밀번호를 바꾼 뒤 저장하기 전에
+                  "연결 테스트"를 누르면, 이제
+                  <b>방금 입력한 새 계정/비밀번호</b>로 테스트합니다(예전에는
+                  저장하기 전까지는 항상 이전에 저장돼 있던 계정으로만
+                  테스트되어, 새 계정 정보를 입력해도 엉뚱하게 예전 계정 오류가
+                  나는 것처럼 보이는 문제가 있었습니다).
+                </li>
+                <li>
+                  수정 내용을 저장하면 접속 상태도 바로 다시 확인되어, 목록의
+                  상태 표시(초록/빨강 점)가 최신 정보로 즉시 갱신됩니다.
+                </li>
+              </ul>
+            </div>
+            <div class="screen">
+              <h3>클러스터 관리</h3>
+              <span class="path">/admin/db-clusters</span>
+              <img
+                src="manual-images/25-admin-db-clusters.png"
+                alt="클러스터 관리 화면"
+              />
+              <p>
+                Primary/Standby로 구성된 서버들을 하나의 클러스터로 묶어
+                대시보드에서 함께 조회할 수 있게 합니다.
+              </p>
+            </div>
+            <div class="screen">
+              <h3>서버별 접근권한 관리</h3>
+              <span class="path">/admin/db-server-permissions</span>
+              <img
+                src="manual-images/27-admin-db-server-permissions.png"
+                alt="서버별 접근권한 관리 화면"
+              />
+              <p>
+                사용자 또는 역할 단위로 어떤 서버를 볼 수 있는지, kill 권한을
+                가질지 지정합니다.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section id="admin-servers-groups">
+          <h2 style="margin-top: 32px">관리자 - 서버 그룹 관리</h2>
+          <p class="desc">
+            모니터링 대상 서버가 많아지면 하나하나 개별로 다루기보다,
+            <b>업무 용도나 시스템 단위로 묶어서</b> 관리하는 것이 편리합니다.
+            "서버 그룹"은 여러 대의 서버를 하나의 이름으로 묶어두는 기능으로,
+            다음 두 곳에서 바로 효과가 있습니다.
+          </p>
+          <ul>
+            <li>
+              <b>헤더 서버 선택 드롭다운</b> —
+              <a href="#dashboard">대시보드</a>의 서버 선택 드롭다운 상단 탭에
+              그룹명이 노출되어, 그 그룹에 속한 서버만 빠르게 모아 볼 수
+              있습니다.
+            </li>
+            <li>
+              <b>접근권한 일괄 부여</b> —
+              <a href="#admin-servers">서버별 접근권한 관리</a>에서 서버
+              하나하나가 아니라 그룹 단위로 접근권한을 한 번에 부여/회수할 수
+              있어, 서버가 늘어나거나 담당자가 바뀔 때 관리가 훨씬 쉬워집니다.
+            </li>
+          </ul>
+          <div class="grid2">
+            <div class="screen">
+              <h3>그룹 목록</h3>
+              <span class="path">/admin/db-server-groups</span>
+              <img
+                src="manual-images/26-admin-db-server-groups.png"
+                alt="서버 그룹 관리 화면"
+              />
+            </div>
+            <div class="screen">
+              <h3>그룹 등록</h3>
+              <span class="path"
+                >/admin/db-server-groups &gt; "서버 그룹 등록" 버튼</span
+              >
+              <img
+                src="manual-images/34-admin-server-group-create-modal.png"
+                alt="서버 그룹 등록 모달"
+              />
+              <p>
+                그룹 이름과 설명을 입력하고, "소속 서버"에서 이 그룹에 포함할
+                서버를 여러 개 선택합니다. 예를 들어 "결제 시스템", "회원
+                시스템"처럼 업무 단위로 묶거나, "운영", "개발/테스트"처럼 환경
+                단위로 묶을 수 있습니다.
+              </p>
+            </div>
+          </div>
+          <div class="note">
+            한 서버는 여러 그룹에 동시에 속할 수 있습니다. 그룹 자체는 조회
+            편의를 위한 분류일 뿐, 서버 등록·삭제와는 무관합니다(그룹을 삭제해도
+            서버는 그대로 남습니다).
+          </div>
+        </section>
+
+        <section id="admin-settings">
+          <h2>관리자 — 시스템 설정</h2>
+          <div class="screen">
+            <span class="path">/admin/system-settings</span>
+            <img
+              src="manual-images/28-admin-system-settings.png"
+              alt="시스템 설정 화면"
+            />
+            <ul>
+              <li>
+                대시보드 갱신 주기, 외부 이력 저장소 연결 정보 등 전역 설정을
+                확인하고 수정합니다.
+              </li>
+              <li>
+                라이선스 상태/입력 카드를 확인하고, 라이선스 키를 입력할 수
+                있습니다.
+              </li>
+              <li>
+                오라클의 경우 대소문자 구분을 무시하도록 설정이 되어 있거나
+                패스워드 정책이 10g이전일 경우 Thick모드로 Oracle Instant
+                Client를 설치 후 설치 디렉토리를 설정해야 합니다.
+                (Thin모드에서는 대소문자 구분이 적용되어 접속이 되지 않습니다.)
+              </li>
+            </ul>
+          </div>
+        </section>
+
+        <section id="license">
+          <h2>라이선스</h2>
+          <p class="desc">
+            wewatch는 최초 실행일로부터 <b>6개월 무료 체험</b>이 제공됩니다.
+            체험 기간에는 모든 기능을 제한 없이 사용할 수 있으며, 화면 상단에
+            만료 14일 이내부터 안내 배너가 표시됩니다. 체험 기간이 끝나면
+            로그인은 계속 가능하지만 그 외 모든 기능이 잠기며, 정식 라이선스
+            키를 입력해야 다시 사용할 수 있습니다.
+          </p>
+          <div class="screen">
+            <h3>라이선스 입력</h3>
+            <span class="path"
+              >시스템 설정 &gt; 라이선스 카드 &gt; "라이선스 입력" 버튼</span
+            >
+            <img
+              src="manual-images/29-admin-license-modal.png"
+              alt="라이선스 입력 모달"
+            />
+            <p>
+              발급받은 라이선스 키를 붙여넣고 "적용" 버튼을 누르면 즉시
+              반영됩니다. 만료 전에 미리 입력해도 됩니다.
+            </p>
+          </div>
+          <div class="note">
+            <b
+              >라이선스 키는 별도로 발급받아야 합니다. 라이선스 발급 관련 문의는
+              아래 공급사에게 연락주세요.</b
+            >
+            <p></p>
+            <img src="manual-images/35-axiom_info.png" alt="엑시엄" />
+          </div>
+        </section>
+
+        <section id="qna">
+          <h2>자주 묻는 질문 (Q&amp;A)</h2>
+          <p class="desc">
+            사용 중 자주 나오는 질문을 모았습니다. 원하는 답을 못 찾았다면
+            매뉴얼 각 화면 설명을 참고하거나, wewatch 공급사에 문의해주세요.
+          </p>
+
+          <div class="qa">
+            <p class="q">
+              <span class="tag">Q.</span> 로그인은 했는데 서버 선택 드롭다운에
+              아무 서버도 안 보여요.
+            </p>
+            <p class="a">
+              <span class="tag">A.</span> 서버가
+              <a href="#admin-servers">DB 서버 관리</a>에 등록돼 있어도, 내
+              계정(또는 내가 속한 역할)에
+              <a href="#admin-servers">접근권한</a>이 부여돼 있지 않으면
+              드롭다운에 나타나지 않습니다. admin 계정으로 접속권한 관리
+              화면에서 내 계정 또는 역할에 해당 서버(또는 서버가 속한 그룹)의
+              접근권한을 부여해달라고 요청하세요.
+            </p>
+          </div>
+
+          <div class="qa">
+            <p class="q">
+              <span class="tag">Q.</span> 서버 접속 정보를 수정했는데 목록에는
+              계속 "접속 실패"로 나와요.
+            </p>
+            <p class="a">
+              <span class="tag">A.</span> 최신 버전에서는 수정 내용을 저장하면
+              자동으로 접속 상태를 다시 확인하므로, 저장 직후 목록의 상태 점이
+              바로 갱신됩니다. 그래도 계속 실패로 보인다면 실제로 입력한
+              호스트/포트/계정 정보가 맞는지, 방화벽이나 DB 접속 권한(예: 특정
+              IP만 허용)에 막혀있지 않은지 확인해보세요. "연결 테스트" 버튼을
+              눌러 나오는 상세 에러 메시지가 원인 파악에 도움이 됩니다.
+            </p>
+          </div>
+
+          <div class="qa">
+            <p class="q">
+              <span class="tag">Q.</span> 대시보드에 표시되는 그래프 지표를
+              바꾸고 싶어요.
+            </p>
+            <p class="a">
+              <span class="tag">A.</span> <a href="#dashboard">대시보드</a> 화면
+              상단의 "그래프 설정" 버튼을 눌러 원하는 지표를 체크/해제하면
+              됩니다. 선택한 구성은 계정 × DB 엔진 단위로 서버에 저장되어, 다른
+              PC에서 같은 계정으로 로그인해도 그대로 유지됩니다.
+            </p>
+          </div>
+          <div class="qa">
+            <p class="q">
+              <span class="tag">Q.</span> 등록된 서버가 많아지면서 목록 관리가
+              번거로워요.
+            </p>
+            <p class="a">
+              <span class="tag">A.</span>
+              <a href="#admin-servers-groups">서버 그룹 관리</a>에서 업무 용도나
+              환경 단위로 서버를 그룹으로 묶어두면, 대시보드 드롭다운에서 그룹
+              단위로 모아 보거나 접근권한을 그룹 단위로 한 번에 부여할 수 있어
+              관리가 훨씬 편해집니다.
+            </p>
+          </div>
+          <div class="qa">
+            <p class="q">
+              <span class="tag">Q.</span> 무료 체험 기간이 끝나면 어떻게 되나요?
+            </p>
+            <p class="a">
+              <span class="tag">A.</span> 로그인 자체는 계속 가능하지만 조회 등
+              그 외 모든 기능이 잠깁니다. <a href="#license">라이선스</a> 섹션을
+              참고해 정식 라이선스 키를 발급받아 입력하면 즉시 다시 사용할 수
+              있습니다. 만료 14일 전부터 화면 상단에 안내 배너가 표시되니 미리
+              준비하실 수 있습니다.
+            </p>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <div class="lightbox" id="lightbox">
+      <img id="lightbox-img" src="" alt="" />
+    </div>
+
+    <footer>wewatch 사용자 매뉴얼</footer>
+
+    <script>
+      document.querySelectorAll(".screen img").forEach((img) => {
+        img.addEventListener("click", () => {
+          document.getElementById("lightbox-img").src = img.src;
+          document.getElementById("lightbox").classList.add("open");
+        });
+      });
+      document
+        .getElementById("lightbox")
+        .addEventListener("click", function () {
+          this.classList.remove("open");
+        });
+    </script>
+  </body>
+</html>
